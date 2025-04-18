@@ -1,1 +1,1 @@
-/home/jacobh/Documents/chess-project/chess-project/target/debug/chess-project: /home/jacobh/Documents/chess-project/chess-project/src/main.rs
+/home/jacobh/Documents/chess-project/chess-project/target/debug/chess-project: /home/jacobh/Documents/chess-project/chess-project/src/main.rs /home/jacobh/Documents/chess-project/chess-project/src/pieces.rs
