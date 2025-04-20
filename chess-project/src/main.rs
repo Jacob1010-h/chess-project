@@ -124,7 +124,19 @@ fn main() {
 
     pretty_print_piece_values();
 
-    // println!("JSON representation of the board:");
+    // Find the legal moves for a white pawn
+    let white_pawn = Piece {
+        color: Color::White,
+        piece_type: PieceType::Pawn,
+    };
+    let pawn_position = (6, 0); // Starting position of the pawn
+    let pawn_moves = white_pawn.get_legal_moves(pawn_position);
+    println!(
+        "Legal moves for white pawn at position {:?}: {:?}",
+        pawn_position, pawn_moves
+    );
+
+    // // println!("JSON representation of the board:");
     // let json_board = create_json_from_board(&game.board);
     // println!("{}", json_board);
 
