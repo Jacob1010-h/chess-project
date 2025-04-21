@@ -23,6 +23,7 @@ pub struct Piece {
     pub piece_type: PieceType,
 }
 
+#[allow(dead_code)]
 impl Piece {
     pub(crate) fn get_value(&self) -> usize {
         match self.piece_type {
@@ -37,12 +38,12 @@ impl Piece {
 
     pub(crate) fn get_piece_type_as_string(&self) -> String {
         match self.piece_type {
-            PieceType::Pawn => "Pawn".to_string(),
-            PieceType::Knight => "Knight".to_string(),
-            PieceType::Bishop => "Bishop".to_string(),
-            PieceType::Rook => "Rook".to_string(),
-            PieceType::Queen => "Queen".to_string(),
-            PieceType::King => "King".to_string(),
+            PieceType::Pawn => "♙".to_string(),
+            PieceType::Knight => "♘".to_string(),
+            PieceType::Bishop => "♗".to_string(),
+            PieceType::Rook => "♖".to_string(),
+            PieceType::Queen => "♕".to_string(),
+            PieceType::King => "♔".to_string(),
         }
     }
 
@@ -173,56 +174,43 @@ impl Piece {
         self.piece_type
     }
 
-    #[allow(dead_code)]
     pub fn new(color: Color, piece_type: PieceType) -> Self {
         Piece { color, piece_type }
     }
 
-    #[allow(dead_code)]
     pub fn w_pawn() -> Self {
         Piece::new(Color::White, PieceType::Pawn)
     }
-    #[allow(dead_code)]
     pub fn w_knight() -> Self {
         Piece::new(Color::White, PieceType::Knight)
     }
-    #[allow(dead_code)]
     pub fn w_bishop() -> Self {
         Piece::new(Color::White, PieceType::Bishop)
     }
-    #[allow(dead_code)]
     pub fn w_rook() -> Self {
         Piece::new(Color::White, PieceType::Rook)
     }
-    #[allow(dead_code)]
     pub fn w_queen() -> Self {
         Piece::new(Color::White, PieceType::Queen)
     }
-    #[allow(dead_code)]
     pub fn w_king() -> Self {
         Piece::new(Color::White, PieceType::King)
     }
-    #[allow(dead_code)]
     pub fn b_pawn() -> Self {
         Piece::new(Color::Black, PieceType::Pawn)
     }
-    #[allow(dead_code)]
     pub fn b_knight() -> Self {
         Piece::new(Color::Black, PieceType::Knight)
     }
-    #[allow(dead_code)]
     pub fn b_bishop() -> Self {
         Piece::new(Color::Black, PieceType::Bishop)
     }
-    #[allow(dead_code)]
     pub fn b_rook() -> Self {
         Piece::new(Color::Black, PieceType::Rook)
     }
-    #[allow(dead_code)]
     pub fn b_queen() -> Self {
         Piece::new(Color::Black, PieceType::Queen)
     }
-    #[allow(dead_code)]
     pub fn b_king() -> Self {
         Piece::new(Color::Black, PieceType::King)
     }

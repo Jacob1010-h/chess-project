@@ -22,19 +22,52 @@ fn pretty_print_board(board: &Board) {
         for square in row.iter() {
             match square {
                 Some(piece) => {
-                    let piece_char = match piece.piece_type {
-                        PieceType::Pawn => 'P',
-                        PieceType::Knight => 'N',
-                        PieceType::Bishop => 'B',
-                        PieceType::Rook => 'R',
-                        PieceType::Queen => 'Q',
-                        PieceType::King => 'K',
+                    // ♔♕♖♗♘♙  ♚♛♜♝♞♟
+                    let symbol = match piece.piece_type {
+                        PieceType::King => {
+                            if piece.color == Color::White {
+                                '♔'
+                            } else {
+                                '♚'
+                            }
+                        }
+                        PieceType::Queen => {
+                            if piece.color == Color::White {
+                                '♕'
+                            } else {
+                                '♛'
+                            }
+                        }
+                        PieceType::Rook => {
+                            if piece.color == Color::White {
+                                '♖'
+                            } else {
+                                '♜'
+                            }
+                        }
+                        PieceType::Bishop => {
+                            if piece.color == Color::White {
+                                '♗'
+                            } else {
+                                '♝'
+                            }
+                        }
+                        PieceType::Knight => {
+                            if piece.color == Color::White {
+                                '♘'
+                            } else {
+                                '♞'
+                            }
+                        }
+                        PieceType::Pawn => {
+                            if piece.color == Color::White {
+                                '♙'
+                            } else {
+                                '♟'
+                            }
+                        }
                     };
-                    let color_char = match piece.color {
-                        Color::White => piece_char.to_ascii_uppercase(),
-                        Color::Black => piece_char.to_ascii_lowercase(),
-                    };
-                    print!("{} ", color_char);
+                    print!("{} ", symbol);
                 }
                 None => print!(". "),
             }
