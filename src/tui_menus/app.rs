@@ -4,17 +4,68 @@ use ratatui::{
     crossterm::event::{KeyCode, KeyEvent, KeyModifiers},
 };
 
-/// Application.
+#[derive(Debug, PartialEq)]
+pub enum AppState {
+    MainMenu,
+    Game,
+    Help,
+    Credits,
+}
+
+#[derive(Default, Debug, Clone)]
+pub struct MenuSelector {
+    pub selected_index: usize,
+    pub num_items: usize,
+    pub items: Vec<String>,
+}
+
+impl MenuSelector {
+    pub fn new() -> Self {
+        Self {
+            selected_index: 0,
+            num_items: 3,
+            items: vec![
+                "Normal game".to_string(),
+                "Help section".to_string(),
+                "Credits".to_string(),
+            ],
+        }
+    }
+
+    pub fn next(&mut self) {
+        if self.selected_index < self.num_items - 1 {
+            self.selected_index += 1;
+        }
+    }
+
+    pub fn previous(&mut self) {
+        if self.selected_index > 0 {
+            self.selected_index -= 1;
+        }
+    }
+
+    pub fn select(&mut self, index: usize) {
+        if index < self.num_items {
+            self.selected_index = index;
+        }
+    }
+
+    pub fn get(&self) -> Option<&String> {
+        if self.selected_index < self.num_items {
+            Some(&self.items[self.selected_index])
+        } else {
+            None
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct App {
-    /// Is the application running?
     pub running: bool,
-    /// Counter.
     pub counter: u8,
-    /// Event handler.
     pub events: EventHandler,
-    // Menu Selector.
-    pub selected_index: usize,
+    pub menu_selector: MenuSelector,
+    pub state: Vec<AppState>,
 }
 
 impl Default for App {
@@ -23,27 +74,27 @@ impl Default for App {
             running: true,
             counter: 0,
             events: EventHandler::new(),
-            selected_index: 0,
+            menu_selector: MenuSelector::new(),
+            state: vec![AppState::MainMenu],
         }
     }
 }
 
 impl App {
-    /// Constructs a new instance of [`App`].
     pub fn new() -> Self {
         Self::default()
     }
 
-    /// Run the application's main loop.
     pub async fn run(mut self, mut terminal: DefaultTerminal) -> color_eyre::Result<()> {
         while self.running {
             terminal.draw(|frame| frame.render_widget(&self, frame.area()))?;
             match self.events.next().await? {
                 Event::Tick => self.tick(),
-                Event::Crossterm(event) => match event {
-                    crossterm::event::Event::Key(key_event) => self.handle_key_events(key_event)?,
-                    _ => {}
-                },
+                Event::Crossterm(event) => {
+                    if let crossterm::event::Event::Key(key_event) = event {
+                        self.handle_key_events(key_event)?;
+                    }
+                }
                 Event::App(app_event) => match app_event {
                     AppEvent::Increment => self.increment_counter(),
                     AppEvent::Decrement => self.decrement_counter(),
@@ -54,39 +105,42 @@ impl App {
         Ok(())
     }
 
-    /// Handles the key events and updates the state of [`App`].
-    pub fn handle_key_events(&mut self, key_event: KeyEvent) -> color_eyre::Result<()> {
+    fn handle_main_menu_keys(&mut self, key_event: KeyEvent) -> color_eyre::Result<()> {
         match key_event.code {
-            KeyCode::Esc | KeyCode::Char('q') => self.events.send(AppEvent::Quit),
-            KeyCode::Char('c' | 'C') if key_event.modifiers == KeyModifiers::CONTROL => {
-                self.events.send(AppEvent::Quit)
-            }
             KeyCode::Right => self.events.send(AppEvent::Increment),
             KeyCode::Left => self.events.send(AppEvent::Decrement),
-            // Other handlers you could add here.
-            KeyCode::Up => {
-                if self.selected_index > 0 {
-                    self.selected_index -= 1;
-                }
-            }
-            KeyCode::Down => {
-                if self.selected_index < 4 {
-                    self.selected_index += 1;
-                }
-            }
-            KeyCode::Enter => {
-                // Handle enter key event
-                match self.selected_index {
-                    0 => println!("Selected Normal game multiplayer"),
-                    1 => println!("Selected Play against a friend or computer"),
-                    2 => println!("Selected Default mode"),
-                    3 => println!("Selected Help section"),
-                    4 => println!("Selected Credits"),
-                    _ => {}
-                }
-            }
+            KeyCode::Up => self.menu_selector.previous(),
+            KeyCode::Down => self.menu_selector.next(),
+            KeyCode::Enter => self.select_app_state(),
             _ => {}
         }
+        Ok(())
+    }
+
+    fn select_app_state(&mut self) {
+        match self.menu_selector.selected_index {
+            0 => self.state.push(AppState::Game),
+            1 => self.state.push(AppState::Help),
+            2 => self.state.push(AppState::Credits),
+            _ => {}
+        }
+    }
+
+    fn handle_window_keys(&mut self, key_event: KeyEvent) -> color_eyre::Result<()> {
+        match key_event.code {
+            KeyCode::Esc | KeyCode::Char('q') => self.quit(),
+            KeyCode::Char('c' | 'C') if key_event.modifiers == KeyModifiers::CONTROL => self.quit(),
+            _ => {}
+        }
+        Ok(())
+    }
+
+    pub fn handle_key_events(&mut self, key_event: KeyEvent) -> color_eyre::Result<()> {
+        if self.state.last() == Some(&AppState::MainMenu) {
+            self.handle_main_menu_keys(key_event)?;
+        }
+        self.handle_window_keys(key_event)?;
+
         Ok(())
     }
 
@@ -98,7 +152,14 @@ impl App {
 
     /// Set running to false to quit the application.
     pub fn quit(&mut self) {
-        self.running = false;
+        if self.state.len() > 1 {
+            self.state.pop();
+        } else {
+            self.state.clear();
+        }
+        if self.state.is_empty() {
+            self.running = false;
+        }
     }
 
     pub fn increment_counter(&mut self) {
