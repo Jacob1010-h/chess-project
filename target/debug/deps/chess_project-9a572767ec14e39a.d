@@ -1,11 +1,12 @@
-/home/jacobh/Documents/chess-project/target/debug/deps/libchess_project-9a572767ec14e39a.rmeta: src/main.rs src/event.rs src/tui_menus/mod.rs src/tui_menus/app.rs src/ui.rs Cargo.toml
+/home/jacobh/Documents/chess-project/target/debug/deps/libchess_project-9a572767ec14e39a.rmeta: src/main.rs src/app.rs src/event.rs src/game.rs src/pieces.rs src/ui.rs Cargo.toml
 
-/home/jacobh/Documents/chess-project/target/debug/deps/chess_project-9a572767ec14e39a.d: src/main.rs src/event.rs src/tui_menus/mod.rs src/tui_menus/app.rs src/ui.rs Cargo.toml
+/home/jacobh/Documents/chess-project/target/debug/deps/chess_project-9a572767ec14e39a.d: src/main.rs src/app.rs src/event.rs src/game.rs src/pieces.rs src/ui.rs Cargo.toml
 
 src/main.rs:
+src/app.rs:
 src/event.rs:
-src/tui_menus/mod.rs:
-src/tui_menus/app.rs:
+src/game.rs:
+src/pieces.rs:
 src/ui.rs:
 Cargo.toml:
 

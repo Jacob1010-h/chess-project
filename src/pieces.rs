@@ -1,10 +1,27 @@
-use strum_macros::EnumIter;
 extern crate serde_json;
+use strum::IntoEnumIterator;
+use strum_macros::EnumIter;
 
 #[derive(Debug, Clone, Copy, serde::Serialize, PartialEq)]
 pub enum Color {
     White,
     Black,
+}
+
+impl Color {
+    pub fn opposite(&self) -> Self {
+        match self {
+            Color::White => Color::Black,
+            Color::Black => Color::White,
+        }
+    }
+
+    pub fn to_color(&self) -> ratatui::style::Color {
+        match self {
+            Color::White => ratatui::style::Color::White,
+            Color::Black => ratatui::style::Color::Black,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, serde::Serialize, EnumIter)]
@@ -33,6 +50,29 @@ impl Piece {
             PieceType::Rook => 5,
             PieceType::Queen => 9,
             PieceType::King => usize::MAX,
+        }
+    }
+
+    pub fn symbol(&self) -> char {
+        match self.piece_type {
+            PieceType::Pawn => '♙',
+            PieceType::Knight => '♘',
+            PieceType::Bishop => '♗',
+            PieceType::Rook => '♖',
+            PieceType::Queen => '♕',
+            PieceType::King => '♔',
+        }
+    }
+
+    pub fn pretty_print_piece_values() {
+        println!("Piece Values:");
+        for piece_type in PieceType::iter() {
+            let piece = Piece {
+                color: Color::White,
+                piece_type,
+            };
+            let value = piece.get_value();
+            println!("{:?}: {}", piece_type, value);
         }
     }
 
