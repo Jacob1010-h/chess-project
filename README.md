@@ -20,6 +20,10 @@ send chess moves to a server and visualize the game in a terminal.
 | Board        | ✅     | Basic board rendering   |
 | Piece        | 🟡     | Basic piece rendering   |
 | Server       | 🔴     | Basic server connection |
+| Main Menu    | ✅     | Basic menu              |
+| Settings     | 🔴     | Basic settings menu     |
+| Help         | 🔴     | Basic help menu         |
+| Credits      | 🔴     | Basic credits menu      |
 
 ## 🚀 Quick Start
 
