@@ -53,14 +53,62 @@ impl Piece {
         }
     }
 
-    pub fn symbol(&self) -> char {
+    pub fn symbol(&self) -> &'static str {
         match self.piece_type {
-            PieceType::Pawn => '♙',
-            PieceType::Knight => '♘',
-            PieceType::Bishop => '♗',
-            PieceType::Rook => '♖',
-            PieceType::Queen => '♕',
-            PieceType::King => '♔',
+            PieceType::Pawn => {
+                "\
+        \n\
+        \n\
+      ▟█▙\n\
+      ▜█▛\n\
+     ▟███▙\n\
+    "
+            }
+            PieceType::Knight => {
+                "\
+    \n\
+    ▟▛██▙\n\
+   ▟█████\n\
+   ▀▀▟██▌\n\
+    ▟████\n\
+    "
+            }
+            PieceType::Bishop => {
+                "\
+    \n\
+       ⭘\n\
+      █✝█\n\
+      ███\n\
+    ▗█████▖\n\
+    "
+            }
+            PieceType::Rook => {
+                "\
+    \n\
+    █▟█▙█\n\
+    ▜███▛\n\
+    ▐███▌\n\
+   ▗█████▖\n\
+    "
+            }
+            PieceType::Queen => {
+                "\
+    \n\
+◀█▟█▙█▶\n\
+  ◥█◈█◤\n\
+  ███\n\
+▗█████▖\n\
+    "
+            }
+            PieceType::King => {
+                "\
+      ✚\n\
+    ▞▀▄▀▚\n\
+    ▙▄█▄▟\n\
+    ▐███▌\n\
+   ▗█████▖\n\
+    "
+            }
         }
     }
 

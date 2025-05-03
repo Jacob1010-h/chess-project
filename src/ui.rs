@@ -113,14 +113,11 @@ impl App {
                 // Draw pieces (replace with your game state)
                 if let Some(piece) = game.get_board().get_piece_at((row, col)) {
                     let symbol = piece.symbol();
-                    buf.set_string(
-                        x + cell_width / 2,
-                        y + cell_height / 2,
-                        symbol.to_string(),
-                        Style::default()
-                            .fg(piece.color.to_color())
-                            .add_modifier(Modifier::BOLD),
-                    );
+                    let paragraph = Paragraph::new(symbol)
+                        .block(Block::default())
+                        .alignment(Alignment::Center)
+                        .style(Style::default().fg(Color::White).bg(color));
+                    paragraph.render(cell_area, buf);
                 }
             }
         }
@@ -148,6 +145,7 @@ impl App {
 
         block.render(area, buf);
     }
+
     fn render_help(&self, area: Rect, buf: &mut Buffer) {
         let block = Block::bordered()
             .title("Help")
@@ -156,7 +154,10 @@ impl App {
 
         let text = Text::from(vec![
             Line::from("Help section..."),
-            Line::from(format!("Counter: {}", self.counter)),
+            Line::from("\n"),
+            Line::from("If you are seeing a bug, please report it."),
+            Line::from("If you want to make a feature request, make it yourself."),
+            Line::from("https://github.com/Jacob1010-h/chess-project"),
         ]);
 
         let paragraph = Paragraph::new(text)
@@ -176,7 +177,10 @@ impl App {
 
         let text = Text::from(vec![
             Line::from("Credits section..."),
-            Line::from(format!("Counter: {}", self.counter)),
+            Line::from("\n"),
+            Line::from("Developed by Jacob1010"),
+            Line::from("Special thanks to the Rust community."),
+            Line::from("This project is open-source, feel free to contribute."),
         ]);
 
         let paragraph = Paragraph::new(text)
