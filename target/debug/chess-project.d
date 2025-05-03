@@ -1,0 +1,1 @@
+/home/jacobh/Documents/chess-project/target/debug/chess-project: /home/jacobh/Documents/chess-project/src/app.rs /home/jacobh/Documents/chess-project/src/event.rs /home/jacobh/Documents/chess-project/src/game.rs /home/jacobh/Documents/chess-project/src/main.rs /home/jacobh/Documents/chess-project/src/pieces.rs /home/jacobh/Documents/chess-project/src/ui.rs
